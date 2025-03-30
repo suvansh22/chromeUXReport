@@ -23,9 +23,9 @@ type DeviceData = URLData[];
 
 type MetricsData = {
   urls: string[];
-  Phone?: DeviceData;
-  Desktop?: DeviceData;
-  Tablet?: DeviceData;
+  Phone?: (string | number)[][];
+  Desktop?: (string | number)[][];
+  Tablet?: (string | number)[][];
 };
 
 type ApiError = {

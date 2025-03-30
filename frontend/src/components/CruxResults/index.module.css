@@ -1,3 +1,53 @@
+.container {
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.loadingContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  gap: 16px;
+}
+
+.errorContainer {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  background-color: #ffebee;
+  border-radius: 4px;
+  margin: 20px 0;
+}
+
+.tableContainer {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.filterControl {
+  min-width: 200px;
+}
+
+.thresholdInput {
+  width: 200px;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+
+  .filterControl,
+  .thresholdInput {
+    width: 100%;
+  }
+}
+
 .tableHead {
   font-weight: 600 !important;
   white-space: nowrap;

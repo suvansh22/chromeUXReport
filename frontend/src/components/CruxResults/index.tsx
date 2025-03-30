@@ -11,15 +11,11 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { snakeToTitleCase } from "../../utils";
 import { DeviceType, MetricsData } from "../../utils/commonTypes";
+import PerformanceInsights from "../PerformanceInsights";
 import styles from "./index.module.css";
-
-type Props = {
-  data: MetricsData | null;
-  deviceType: DeviceType;
-};
 
 const FILTERS = [
   "First Contentful Paint",
@@ -38,6 +34,11 @@ const METRIC_UNITS = {
 } as const;
 
 type MetricRow = [string, string, string, string, string];
+
+type Props = {
+  data: MetricsData | null;
+  deviceType: DeviceType;
+};
 
 const CruxResults = ({ data, deviceType }: Props) => {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
@@ -131,6 +132,7 @@ const CruxResults = ({ data, deviceType }: Props) => {
     <Box sx={{ mt: 2 }}>
       {data?.urls && data?.[deviceType] ? (
         <>
+          <PerformanceInsights data={data[deviceType]} />
           <Select
             value={selectedFilter}
             onChange={filterData}

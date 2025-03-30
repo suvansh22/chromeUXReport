@@ -1,0 +1,56 @@
+.insightsContainer {
+  margin: 20px 0;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.icon {
+  margin-right: 10px;
+  color: #1976d2;
+}
+
+.insightItem {
+  padding: 12px 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.insightItem:last-child {
+  border-bottom: none;
+}
+
+.insightText {
+  margin-left: 8px;
+}
+
+.success {
+  color: #2e7d32;
+}
+
+.warning {
+  color: #ed6c02;
+}
+
+.error {
+  color: #d32f2f;
+}
+
+@media (max-width: 600px) {
+  .insightsContainer {
+    margin: 10px 0;
+    padding: 15px;
+  }
+
+  .insightItem {
+    padding: 8px 0;
+  }
+}
