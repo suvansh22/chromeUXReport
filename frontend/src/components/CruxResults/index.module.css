@@ -1,0 +1,20 @@
+.tableHead {
+  font-weight: 600 !important;
+}
+.cell {
+  cursor: pointer;
+}
+.cell:hover {
+  background-color: gray;
+}
+.col1 {
+  background-color: green;
+  color: white !important;
+}
+.col2 {
+  background-color: yellow;
+}
+.col3 {
+  background-color: red;
+  color: white !important;
+}
