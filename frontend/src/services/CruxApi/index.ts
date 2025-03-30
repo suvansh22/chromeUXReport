@@ -71,7 +71,7 @@ const fetchWithRetry = async (
 export const fetchCruxData = async (
   urls: string[],
   formFactor: string
-): Promise<URLData[]> => {
+): Promise<(string | number)[][]> => {
   try {
     const response = await fetchWithRetry(urls, formFactor);
     return getAggregatedData(response);
