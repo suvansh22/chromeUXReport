@@ -133,6 +133,70 @@ The Chrome UX Report project is a web application designed to fetch and display 
 - Efficient data processing and display
 - Configurable request limits
 
+## Performance Metrics
+
+The application displays various performance metrics from the Chrome UX Report (CrUX):
+
+- First Contentful Paint (FCP)
+- Largest Contentful Paint (LCP)
+- Cumulative Layout Shift (CLS)
+- Time to First Byte (TTFB)
+- Interaction to Next Paint (INP)
+
+Each metric is displayed with:
+
+- Good/Needs Improvement/Poor distribution
+- 75th percentile values
+- Historical trends
+- Device-specific data
+
+## Performance Insights
+
+The application provides intelligent performance insights based on CrUX metrics to help identify and address performance issues:
+
+### Key Features
+
+- Real-time analysis of performance metrics
+- Device-specific insights (mobile/desktop)
+- Visual indicators for metric status
+- Actionable recommendations
+
+### Metric Analysis
+
+The insights panel analyzes:
+
+- First Contentful Paint (FCP)
+- Largest Contentful Paint (LCP)
+- Cumulative Layout Shift (CLS)
+- Time to First Byte (TTFB)
+- Interaction to Next Paint (INP)
+
+### Recommendations
+
+Based on the metrics, the system provides specific recommendations for:
+
+- Server optimization
+- Image optimization
+- Layout stability
+- JavaScript execution
+- Resource loading
+
+### Visual Indicators
+
+- Green: Good performance
+- Yellow: Needs improvement
+- Red: Poor performance
+
+### Thresholds
+
+The system uses industry-standard thresholds:
+
+- FCP: < 1.8s (Good), 1.8s-3s (Needs Improvement), > 3s (Poor)
+- LCP: < 2.5s (Good), 2.5s-4s (Needs Improvement), > 4s (Poor)
+- CLS: < 0.1 (Good), 0.1-0.25 (Needs Improvement), > 0.25 (Poor)
+- TTFB: < 0.6s (Good), 0.6s-1s (Needs Improvement), > 1s (Poor)
+- INP: < 200ms (Good), 200ms-500ms (Needs Improvement), > 500ms (Poor)
+
 ## Configuration
 
 ### Frontend Configuration
