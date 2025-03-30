@@ -4,11 +4,11 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 
-dotenv.config(); // Load environment variables
-
+dotenv.config();
+const allowedOrigins = ["http://localhost:3000"];
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors(allowedOrigins));
 
 const CRUX_API_URL = process.env.CRUX_API_URL;
 const API_KEY = process.env.CRUX_API_KEY;
@@ -42,12 +42,6 @@ app.post("/api/crux", async (req, res) => {
         }
       })
     );
-    // const combinedResult = {
-    //   urls: [],
-    //   data: {}
-    // }
-    // results.forEach((result) => {
-    // })
     res.json(results);
   } catch (error) {
     console.error("Server error:", error);

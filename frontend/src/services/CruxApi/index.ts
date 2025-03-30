@@ -10,9 +10,11 @@ export const AVAILABLE_METRICS = [
   "round_trip_time",
 ] as const;
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 export const fetchCruxData = async (urls: string[], formFactor: string) => {
   try {
-    const response = await fetch("http://localhost:5000/api/crux", {
+    const response = await fetch(`${API_BASE_URL}/api/crux`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
