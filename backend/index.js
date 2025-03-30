@@ -10,7 +10,8 @@ import logger from "./utils/logger.js";
 
 dotenv.config();
 const app = express();
-const allowedOrigins = process.env.ALLOWED_ORIGINS?.split(",") || [];
+const allowedOrigins =
+  process.env.ALLOWED_ORIGINS?.split(",").map((origin) => origin.trim()) || [];
 
 // Security middleware
 app.use(securityHeaders);
@@ -21,15 +22,33 @@ app.use(express.json({ limit: "10mb" }));
 app.use(
   cors({
     origin: function (origin, callback) {
-      console.log("origin", allowedOrigins);
-      console.log("incoming origin", origin);
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Blocked by CORS"));
+      logger.info(`Received request from origin: ${origin}`);
+      logger.info(`Allowed origins: ${allowedOrigins.join(", ")}`);
+
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) {
+        logger.info("No origin provided, allowing request");
+        return callback(null, true);
       }
+
+      // Check if the origin is in the allowed list
+      if (allowedOrigins.includes(origin)) {
+        logger.info(`Origin ${origin} is allowed`);
+        return callback(null, true);
+      }
+
+      // For development, allow all origins
+      if (SERVER_CONFIG.NODE_ENV === "development") {
+        logger.info("Development mode: allowing all origins");
+        return callback(null, true);
+      }
+
+      logger.error(`Origin ${origin} is not allowed`);
+      return callback(new Error(`Origin ${origin} is not allowed`));
     },
     credentials: true,
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
@@ -50,4 +69,5 @@ const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   logger.info(`Server is running on port ${PORT}`);
   logger.info(`Environment: ${SERVER_CONFIG.NODE_ENV}`);
+  logger.info(`Allowed origins: ${allowedOrigins.join(", ")}`);
 });
