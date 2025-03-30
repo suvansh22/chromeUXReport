@@ -22,33 +22,13 @@ app.use(express.json({ limit: "10mb" }));
 app.use(
   cors({
     origin: function (origin, callback) {
-      logger.info(`Received request from origin: ${origin}`);
-      logger.info(`Allowed origins: ${allowedOrigins.join(", ")}`);
-
-      // Allow requests with no origin (like mobile apps or curl requests)
-      if (!origin) {
-        logger.info("No origin provided, allowing request");
-        return callback(null, true);
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Blocked by CORS"));
       }
-
-      // Check if the origin is in the allowed list
-      if (allowedOrigins.includes(origin)) {
-        logger.info(`Origin ${origin} is allowed`);
-        return callback(null, true);
-      }
-
-      // For development, allow all origins
-      if (SERVER_CONFIG.NODE_ENV === "development") {
-        logger.info("Development mode: allowing all origins");
-        return callback(null, true);
-      }
-
-      logger.error(`Origin ${origin} is not allowed`);
-      return callback(new Error(`Origin ${origin} is not allowed`));
     },
     credentials: true,
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
@@ -56,7 +36,7 @@ app.use(
 app.use("/api", cruxRoutes);
 
 // Error handling middleware
-app.use((err, req, res, next) => {
+app.use((err, _, res) => {
   logger.error("Unhandled error:", err);
   res.status(500).json({
     error: "Internal server error",
