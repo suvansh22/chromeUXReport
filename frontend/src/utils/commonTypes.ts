@@ -1,12 +1,6 @@
 import { DeviceEnum } from "./commonEnums";
 
 type DeviceType = keyof typeof DeviceEnum;
-type MetricsData = {
-  urls: string[];
-  Phone?: any[];
-  Desktop?: any[];
-  Tablet?: any[];
-};
 
 type HistogramBin = {
   start: number | string;
@@ -22,6 +16,22 @@ type MetricData = {
 type URLData = {
   url: string;
   data: Record<string, MetricData>;
+  error?: string;
 };
 
-export type { DeviceType, MetricsData, URLData };
+type DeviceData = URLData[];
+
+type MetricsData = {
+  urls: string[];
+  Phone?: DeviceData;
+  Desktop?: DeviceData;
+  Tablet?: DeviceData;
+};
+
+type ApiError = {
+  message: string;
+  code?: string;
+  details?: unknown;
+};
+
+export type { ApiError, DeviceData, DeviceType, MetricsData, URLData };

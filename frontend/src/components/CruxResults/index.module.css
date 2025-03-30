@@ -1,20 +1,73 @@
 .tableHead {
   font-weight: 600 !important;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;
 }
 .cell {
   cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  position: relative;
 }
 .cell:hover {
-  background-color: gray;
+  background-color: rgba(0, 0, 0, 0.08);
 }
 .col1 {
-  background-color: green;
+  background-color: #2e7d32;
   color: white !important;
+}
+.col1:hover {
+  background-color: #1b5e20;
 }
 .col2 {
-  background-color: yellow;
+  background-color: #ffa000;
+  color: rgba(0, 0, 0, 0.87) !important;
+}
+.col2:hover {
+  background-color: #f57c00;
 }
 .col3 {
-  background-color: red;
+  background-color: #d32f2f;
   color: white !important;
+}
+.col3:hover {
+  background-color: #b71c1c;
+}
+
+@media (max-width: 600px) {
+  .tableHead {
+    font-size: 0.875rem;
+  }
+
+  .cell {
+    padding: 8px 4px;
+  }
+}
+
+/* Improve table container */
+.tableContainer {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+/* Add subtle borders */
+.tableCell {
+  border-right: 1px solid rgba(224, 224, 224, 1);
+}
+
+/* Improve hover states */
+.tableRow:hover {
+  background-color: rgba(0, 0, 0, 0.04);
+}
+
+/* Add sort indicator styles */
+.sortIndicator {
+  margin-left: 4px;
+  font-size: 0.8em;
+  opacity: 0.7;
+}
+
+.tableHead:hover .sortIndicator {
+  opacity: 1;
 }

@@ -1,5 +1,6 @@
 import { getAggregatedData } from "../../utils";
-import { URLData } from "../../utils/commonTypes";
+import { ApiError, URLData } from "../../utils/commonTypes";
+import { API_CONFIG, ERROR_MESSAGES } from "../../utils/constants";
 
 export const AVAILABLE_METRICS = [
   "cumulative_layout_shift",
@@ -12,27 +13,72 @@ export const AVAILABLE_METRICS = [
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const fetchCruxData = async (urls: string[], formFactor: string) => {
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const createTimeoutPromise = () =>
+  new Promise<never>((_, reject) =>
+    setTimeout(
+      () => reject(new Error(ERROR_MESSAGES.API_TIMEOUT)),
+      API_CONFIG.TIMEOUT
+    )
+  );
+
+const handleApiError = (error: unknown): ApiError => {
+  if (error instanceof Error) {
+    return {
+      message: error.message,
+      details: error,
+    };
+  }
+  return {
+    message: ERROR_MESSAGES.SERVER_ERROR,
+    details: error,
+  };
+};
+
+const fetchWithRetry = async (
+  urls: string[],
+  formFactor: string,
+  retryCount = 0
+): Promise<URLData[]> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/crux`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ urls, metrics: AVAILABLE_METRICS, formFactor }),
-    });
+    const response = await Promise.race([
+      fetch(`${API_BASE_URL}/api/crux`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ urls, metrics: AVAILABLE_METRICS, formFactor }),
+      }),
+      createTimeoutPromise(),
+    ]);
 
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      throw new Error(ERROR_MESSAGES.NETWORK_ERROR);
     }
 
     const jsonResp: URLData[] = await response.json();
-    const extractedData = getAggregatedData(jsonResp);
-    return extractedData;
-  } catch (err: unknown) {
-    if (err instanceof Error) {
-      throw new Error(err.message);
+    return jsonResp;
+  } catch (error) {
+    if (retryCount < API_CONFIG.RETRY_COUNT) {
+      await sleep(API_CONFIG.RETRY_DELAY * (retryCount + 1));
+      return fetchWithRetry(urls, formFactor, retryCount + 1);
     }
-    throw new Error("Unknown error occurred while fetching CrUX data");
+    throw handleApiError(error);
+  }
+};
+
+export const fetchCruxData = async (
+  urls: string[],
+  formFactor: string
+): Promise<URLData[]> => {
+  try {
+    const response = await fetchWithRetry(urls, formFactor);
+    return getAggregatedData(response);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error;
+    }
+    throw new Error(ERROR_MESSAGES.SERVER_ERROR);
   }
 };
