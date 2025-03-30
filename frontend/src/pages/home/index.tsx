@@ -79,7 +79,7 @@ const Home = () => {
   }, [data, deviceType, urls]);
 
   return (
-    <Container>
+    <Container sx={{ paddingInline: 2, paddingBlock: 3 }}>
       <Typography variant="h4" gutterBottom>
         Chrome UX Report Fetcher
       </Typography>
