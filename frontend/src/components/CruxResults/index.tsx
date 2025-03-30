@@ -37,7 +37,7 @@ const METRIC_UNITS = {
   interaction_to_next_paint: "ms",
 } as const;
 
-type MetricRow = [string, number, number, number, number]; // [metric, good, needsImprovement, poor, p75]
+type MetricRow = [string, string, string, string, string];
 
 const CruxResults = ({ data, deviceType }: Props) => {
   const [selectedFilter, setSelectedFilter] = useState<string>("all");
@@ -48,7 +48,8 @@ const CruxResults = ({ data, deviceType }: Props) => {
   // Memoize filtered data
   const filteredData = useMemo(() => {
     if (!data?.[deviceType]) return [];
-    return data[deviceType].filter(
+    const aggregatedData = data[deviceType] as unknown as MetricRow[];
+    return aggregatedData.filter(
       (metricData: MetricRow) =>
         snakeToTitleCase(metricData[0]) === selectedFilter ||
         selectedFilter === "all"
@@ -60,7 +61,9 @@ const CruxResults = ({ data, deviceType }: Props) => {
     if (!selectedSort.length) return filteredData;
     const [sortRow, order] = selectedSort;
     return [...filteredData].sort((a: MetricRow, b: MetricRow) => {
-      return order ? b[sortRow] - a[sortRow] : a[sortRow] - b[sortRow];
+      const aVal = parseFloat(a[sortRow]);
+      const bVal = parseFloat(b[sortRow]);
+      return order ? bVal - aVal : aVal - bVal;
     });
   }, [filteredData, selectedSort]);
 
@@ -68,7 +71,9 @@ const CruxResults = ({ data, deviceType }: Props) => {
   const thresholdFilteredData = useMemo(() => {
     if (!threshold) return sortedData;
     const thresholdVal = Number(threshold);
-    return sortedData.filter((val: MetricRow) => val[4] >= thresholdVal);
+    return sortedData.filter(
+      (val: MetricRow) => parseFloat(val[4]) >= thresholdVal
+    );
   }, [sortedData, threshold]);
 
   const filterData = useCallback((e: SelectChangeEvent<string>) => {
@@ -117,7 +122,7 @@ const CruxResults = ({ data, deviceType }: Props) => {
     return order ? "↑" : "↓";
   };
 
-  const formatMetricValue = (value: number, metric: string) => {
+  const formatMetricValue = (value: string, metric: string) => {
     const unit = METRIC_UNITS[metric as keyof typeof METRIC_UNITS] || "ms";
     return `${value} ${unit}`;
   };
@@ -243,13 +248,13 @@ const CruxResults = ({ data, deviceType }: Props) => {
                     <TableRow key={metricData[0]}>
                       <TableCell>{snakeToTitleCase(metricData[0])}</TableCell>
                       <TableCell className={styles.col1}>
-                        {(metricData[1] * 100).toFixed(2)}%
+                        {(parseFloat(metricData[1]) * 100).toFixed(2)}%
                       </TableCell>
                       <TableCell className={styles.col2}>
-                        {(metricData[2] * 100).toFixed(2)}%
+                        {(parseFloat(metricData[2]) * 100).toFixed(2)}%
                       </TableCell>
                       <TableCell className={styles.col3}>
-                        {(metricData[3] * 100).toFixed(2)}%
+                        {(parseFloat(metricData[3]) * 100).toFixed(2)}%
                       </TableCell>
                       <TableCell>
                         {formatMetricValue(metricData[4], metricData[0])}
