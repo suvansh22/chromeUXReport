@@ -8,17 +8,6 @@ import { compareArray } from "../../utils";
 import { DeviceType, MetricsData } from "../../utils/commonTypes";
 const CruxResults = lazy(() => import("../../components/CruxResults"));
 
-const mockData = {
-  urls: ["https://www.hotstar.com/in/home"],
-  Phone: [
-    ["first_contentful_paint", 0.735, 0.1487, 0.1163, 1872],
-    ["largest_contentful_paint", 0.2053, 0.2288, 0.5659, 7340],
-    ["cumulative_layout_shift", 0.4419, 0.2497, 0.3083, "0.32"],
-    ["experimental_time_to_first_byte", 0.7116, 0.1905, 0.098, 916],
-    ["interaction_to_next_paint", 0.6065, 0.2927, 0.1008, 282],
-  ],
-};
-
 const Home = () => {
   const [urls, setUrls] = useState<string[]>([]);
   const [metrics, setMetrics] = useState<string[]>([]);
