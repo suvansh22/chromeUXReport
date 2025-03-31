@@ -138,9 +138,3 @@ chromeUxReportWebApp/
 │   └── package.json
 └── README.md
 ```
-
-## Development
-
-### Adding New Features
-
-1. Create new components in `
