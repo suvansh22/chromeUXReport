@@ -150,6 +150,32 @@ const PerformanceInsights = ({ data }: { data: (string | number)[][] }) => {
           });
         }
       }
+
+      // RTT Insights
+      if (metric === "round_trip_time") {
+        const p75 = Number(metricData[4]);
+        if (p75 <= 100) {
+          insights.push({
+            type: "success",
+            message: "Your Round Trip Time (RTT) is excellent!",
+            icon: <CheckCircle color="success" />,
+          });
+        } else if (p75 <= 300) {
+          insights.push({
+            type: "warning",
+            message:
+              "Your Round Trip Time (RTT) needs improvement. Consider optimizing network latency and server response time.",
+            icon: <Warning color="warning" />,
+          });
+        } else {
+          insights.push({
+            type: "error",
+            message:
+              "Your Round Trip Time (RTT) is poor. Focus on reducing network latency, optimizing server location, and improving server response time.",
+            icon: <Error color="error" />,
+          });
+        }
+      }
     });
 
     return insights;

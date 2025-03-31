@@ -23,6 +23,7 @@ const FILTERS = [
   "Cumulative Layout Shift",
   "Experimental Time To First Byte",
   "Interaction To Next Paint",
+  "Round Trip Time",
 ] as const;
 
 const METRIC_UNITS = {
