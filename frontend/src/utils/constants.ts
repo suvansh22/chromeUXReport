@@ -17,6 +17,7 @@ export const UI_CONFIG = {
 } as const;
 
 export const ERROR_MESSAGES = {
+  DUPLICATE_URLS: "Duplicate URLs are not allowed",
   NO_URLS: "Please add at least one URL",
   INVALID_URL: "Invalid URL format",
   API_TIMEOUT: "Request timed out. Please try again",

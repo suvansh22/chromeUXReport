@@ -31,7 +31,7 @@ The Chrome UX Report project is a web application designed to fetch and display 
 - **CruxResults**: Displays the fetched performance data in a tabular format and enabled different filtering and sorting options
 - **Fallback**: Loading state component for lazy-loaded components
 
-#### Type Definitions:
+#### Key Type Definitions:
 
 - **DeviceType**: Type-safe device form factor selection
 - **MetricsData**: Structured type for API response data
@@ -117,6 +117,7 @@ The Chrome UX Report project is a web application designed to fetch and display 
 
 ### Technical Features
 
+- URL validation on clientside
 - Type-safe development with TypeScript
 - Lazy loading for performance optimization
 - Retry mechanism for failed requests

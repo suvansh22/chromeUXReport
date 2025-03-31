@@ -3,21 +3,32 @@ import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import TextField from "@mui/material/TextField";
 import { useCallback, useState } from "react";
+import { ERROR_MESSAGES } from "../../utils/constants";
+import { isValidUrl } from "../../utils/index";
 
 type Props = {
   urls: string[];
   setUrls: (urls: string[]) => void;
+  setError: (error: string) => void;
 };
 
-const UrlInput = ({ urls, setUrls }: Props) => {
+const UrlInput = ({ urls, setUrls, setError }: Props) => {
   const [inputUrl, setInputUrl] = useState("");
 
   const addUrl = useCallback(() => {
-    if (inputUrl && !urls.includes(inputUrl)) {
+    if (!isValidUrl(inputUrl)) {
+      setError(ERROR_MESSAGES.INVALID_URL);
+      return;
+    }
+    if (urls.includes(inputUrl)) {
+      setError(ERROR_MESSAGES.DUPLICATE_URLS);
+      return;
+    }
+    if (inputUrl) {
       setUrls([...urls, inputUrl]);
       setInputUrl("");
     }
-  }, [inputUrl, setUrls, urls]);
+  }, [inputUrl, setError, setUrls, urls]);
 
   const removeUrl = useCallback(
     (urlToRemove: string) => {

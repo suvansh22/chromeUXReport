@@ -23,6 +23,7 @@ const Home = () => {
   const [error, setError] = useState("");
 
   const handleFetchData = useCallback(async () => {
+    setError("");
     if (urls.length === 0) {
       setError(ERROR_MESSAGES.NO_URLS);
       return;
@@ -41,9 +42,7 @@ const Home = () => {
         return data[deviceType];
       }
     }
-
     setLoading(true);
-    setError("");
 
     // If URLs are different, clear all data
     if (!areUrlsSame) {
@@ -83,7 +82,7 @@ const Home = () => {
       <Typography variant="h4" gutterBottom>
         Chrome UX Report Fetcher
       </Typography>
-      <UrlInput urls={urls} setUrls={setUrls} />
+      <UrlInput urls={urls} setUrls={setUrls} setError={setError} />
       <MetricsSelector
         metrics={metrics}
         setMetrics={setMetrics}

@@ -54,4 +54,17 @@ const getAggregatedData = (data: URLData[]) => {
   return aggregatedData;
 };
 
-export { compareArray, getAggregatedData, snakeToTitleCase };
+const isValidUrl = (url: string): boolean => {
+  try {
+    url = url.trim();
+    if (!url.startsWith("http://") && !url.startsWith("https://")) {
+      return false;
+    }
+    const urlObject = new URL(url);
+    return urlObject.hostname.includes(".");
+  } catch {
+    return false;
+  }
+};
+
+export { compareArray, getAggregatedData, isValidUrl, snakeToTitleCase };
